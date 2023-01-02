@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+zmq
+pyproj
+pysqlite3
+requests
+progressbar2
+urllib3
+wptools

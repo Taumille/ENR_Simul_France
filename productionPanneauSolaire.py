@@ -7,7 +7,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-def traitement_donnée():
+def traitement_donnee():
     def changeNombreLong(nb):
         nb=str(nb)
         if len(nb)>=3 or nb[0]!="0":

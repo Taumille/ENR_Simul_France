@@ -23,7 +23,7 @@ def Regroup():
     pdefault=2
 
     print("Connexion à la base de données")
-    conn=sqlite3.connect("eolienne.db")
+    conn=sqlite3.connect("database/eolienne.db")
     c=conn.cursor()
     print("Connecté")
 
@@ -40,6 +40,9 @@ def Regroup():
 
     try:
         c.execute('DROP TABLE eolFiltreGroup')
+        c.execute('DROP TABLE used')
+        print("Anciennes tables supprimées")
+        c.execute('CREATE TABLE used (gid INT)')
     except:
         pass
     c.execute('CREATE TABLE eolFiltreGroup (nomCommun	TEXT,PuissanceNominale	NUMERIC,ids	TEXT, idInit INT)')
@@ -74,7 +77,7 @@ def Regroup():
             ids += "]"
 
             c.execute('INSERT INTO eolFiltreGroup VALUES("' + nomCommun + '",' + str(ptot) + ",'" + ids + "',"+str(liste[i][0])+")")
-
+            print("Écriture de " + nomCommun + " en cours")
         if liste[i][4]!='Null' and i!=len(liste)-1 and not(liste[i][0] in used):
             nomCommun=formateTexte(liste[i][4])
             ptot=0
@@ -104,7 +107,7 @@ def Regroup():
     conn.close()
 
 def Verif():
-    conn=sqlite3.connect("eolienne.db")
+    conn=sqlite3.connect("database/eolienne.db")
     c=conn.cursor()
 
     c.execute("SELECT* FROM eolfiltre")
@@ -157,7 +160,7 @@ def coord():
         return s_f
 
     print("Connexion à la base...;;")
-    conn=sqlite3.connect("eolienne.db")
+    conn=sqlite3.connect("database/eolienne.db")
     c=conn.cursor()
     print("Base connectée !")
 
@@ -314,7 +317,7 @@ def production():
 
     puissance_prod=0
     print("Connexion à la base de donnée...")
-    conn=sqlite3.connect("eolienne.db")
+    conn=sqlite3.connect("database/eolienne.db")
     c=conn.cursor()
     c.execute("SELECT * FROM eolCoord")
     coord=c.fetchall()
@@ -343,7 +346,7 @@ def production():
 def duree_de_vie():
     print("Connexion à la base de donnée...")
 
-    conn=sqlite3.connect("eolienne.db")
+    conn=sqlite3.connect("database/eolienne.db")
     c=conn.cursor()
     c.execute("DROP TABLE eolDate")
     c.execute('CREATE TABLE "eolDate" ("AnneeCrea" INTEGER,"Moicrea" INTEGER,"JourCrea" INTEGER,"AnneeFin" INTEGER,"MoisFin" INTEGER,"JourFin" INTEGER)')
@@ -362,8 +365,8 @@ def duree_de_vie():
     for k in range(len(crea)):
         bar.update(k)
 
-        if crea[k]>2022:
-            crea[k]=2022
+        if crea[k]>2023:
+            crea[k]=2023
         anneeC=int(crea[k])
         moisC=int((crea[k]-anneeC)*12)+1
         jourC=int(abs(((crea[k]-anneeC)*12-moisC))*30.4375)+1
@@ -387,4 +390,5 @@ def duree_de_vie():
     conn.commit()
     conn.close()
 
-production()
+if __name__ == "__main__":
+    Regroup()

@@ -1,7 +1,6 @@
 import wptools
 import csv
 import sqlite3
-import urllib
 import progressbar
 import zmq
 
@@ -19,7 +18,7 @@ def rangement():
                 sfin+="."
         return float(sfin)
 
-    print("Conenxion à la base de donnée...")
+    print("Connexion à la base de donnée...")
     conn=sqlite3.connect("hydro.db")
     c=conn.cursor()
     try:
